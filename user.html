@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+  <link rel="stylesheet" href="Homescreen_files/bootstrap.css">
+   <link rel="stylesheet" href="user.css">
+  <script src="Homescreen_files/jquery.js"></script>
+  <script src="Homescreen_files/bootstrap.js"></script>
+  <script src="user.js"></script>
+
+  
+
+
+
+</head>
+<body>
+
+  <field>
+  <h1 style="margin-left:350px;margin-top:50px;  margin-top:0px;font-family:times new roman;font-style:bold;">Add User</h1>
+    <label style="margin-left:350px;margin-right:95px;margin-top:20px;font-family:times new roman;font-style:bold;" for="lname">User Id</label>
+    <input type="text" id="uid" name="User_id" placeholder="Enter user id">
+  
+   <br>
+    <label style="margin-left:350px;margin-right:75px;margin-top:20px;font-family:times new roman;font-style:bold;" for="lname">User Name</label>
+    <input type="text" id="uname" name="User_name" placeholder="Enter user name">
+    <br>
+    <label style="margin-left:350px;margin-right:85px;  margin-top:20px;font-family:times new roman;font-style:bold;" for="lname">Password</label>
+    <input type="password" id="pass" name="Password" placeholder="Enter Password">
+    <br>
+  <label style="margin-left:350px;margin-right:30px;  margin-top:20px;font-family:times new roman;font-style:bold;" for="lname">Confirm Password</label>
+    <input type="password" id="cpass" name="Confirm_Password" placeholder="ReEnter Password">
+    <br>
+ <div class="form-group">
+    <label style="padding:2px 5px 2px 5px;margin-left:350px;margin-right:50px; margin-top:20px;font-family:times new roman;font-style:bold;" for="lname">Role Name</label>
+       <select id="dates-field2" style="padding:2px 5px 2px 0px;">
+            <option value="Admin">Administrator</option><br>
+            <option value="DTE">Data Entry Operator</option><br>
+            <option value="Teacher">Teacher</option><br>
+       </select>
+      
+    </div>
+</div>
+   <button id="submit" style=" background-color: black;border: none;color: white;padding: 3px 15px 3px 15px;text-decoration: none;margin: 30px 2px 0px 400px;cursor: pointer;" >Submit</button>
+
+  <script type="text/javascript">
+  function ValidateEmail(email) {
+        var expr = /^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+        return expr.test(email);
+    };
+
+   $("#submit").click(function(){
+     
+     var u_id=$("#uid").val();
+     var uname=$("#uname").val();
+     var pass=$('#result').html(checkStrength($('#pass').val()))
+    
+     var cpass=$("#cpass").val();
+     var  roll=$("#dates-field2").val();
+
+     if (!ValidateEmail($("#uid").val())) {
+            alert("Invalid email address.");
+            return;
+        }
+         if(u_id.length==0)
+                        {
+                           $("#uid").css('border-color','red');
+                           alert("please insert user id");          
+                           return;
+                        }
+                              
+     
+     if(pass!=cpass)
+     {
+       alert("Password and Confirmed do not match");
+       return;
+    }
+    alert(uname);
+   $.post("addUser.php",{u_id:u_id,uname:uname,pass:pass,roll:roll},function(data){
+    alert(data);
+    }); 
+  });
+   function checkStrength(pass) {
+var strength = 0
+if (pass.length < 6) {
+$('#result').removeClass()
+$('#result').addClass('short')
+return 'Too short'
+}
+if (pass.length > 7) strength += 1
+// If password contains both lower and uppercase characters, increase strength value.
+if (pass.match(/([a-z].*[A-Z])|([A-Z].*[a-z])/)) strength += 1
+// If it has numbers and characters, increase strength value.
+if (pass.match(/([a-zA-Z])/) && pass.match(/([0-9])/)) strength += 1
+// If it has one special character, increase strength value.
+if (pass.match(/([!,%,&,@,#,$,^,*,?,_,~])/)) strength += 1
+// If it has two special characters, increase strength value.
+if (pass.match(/(.*[!,%,&,@,#,$,^,*,?,_,~].*[!,%,&,@,#,$,^,*,?,_,~])/)) strength += 1
+// Calculated strength value, we can return messages
+// If value is less than 2
+if (strength < 2) {
+$('#result').removeClass()
+$('#result').addClass('weak')
+return 'Weak'
+} else if (strength == 2) {
+$('#result').removeClass()
+$('#result').addClass('good')
+return 'Good'
+} else {
+$('#result').removeClass()
+$('#result').addClass('strong')
+return 'Strong'
+}
+}
+
+</script>
+ 
+  
+  </field>
+
+</body></html>
